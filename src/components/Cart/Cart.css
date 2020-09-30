@@ -1,0 +1,20 @@
+.total{
+    color: #b12704;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 22px;
+    border-top: 1px solid gray;
+}
+.card-tk {
+    float: right;
+}
+p{
+    margin-bottom: -20px;
+}
+.center{
+    text-align: center;
+}
+.cart-main{
+    position: fixed;
+    width: 25%;
+}
