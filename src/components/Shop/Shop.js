@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import fakeData from '../../fakeData';
 import './Shop.css'
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
@@ -9,22 +8,42 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 const Shop = () => {
-    const product10=fakeData.slice(0,10);
-    const [product,setProduct]=useState(product10)
-   const [cart, setCart]=useState([])
 
+    const [products,setProducts]=useState([])
+    const products10=products.slice(0,10)
+
+   const [cart, setCart]=useState([])
+    useEffect(()=>{
+        fetch('https://sheltered-savannah-58501.herokuapp.com/products')
+        .then(res=>res.json())
+        .then(data=>setProducts(data))
+    },[])
 
     useEffect(()=>{
         const productsDatabase =getDatabaseCart()
         const productKeys=Object.keys(productsDatabase);
+       if(products.length){
         const count = productKeys.map(pdKey=>{
-            const product=fakeData.find(pd=> pd.key===pdKey)
+            const product=products.find(pd=> pd.key===pdKey)
             product.quantity= productsDatabase[pdKey]
             return product;
         })
         setCart(count)
+       }
 
-    },[])
+    },[products])
+    // useEffect(()=>{
+    //     const products=getDatabaseCart()
+    //     const ProductKeys = Object.keys(products)
+    //     fetch('https://sheltered-savannah-58501.herokuapp.com/productsByKeys',{
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify(ProductKeys)
+    //     })
+    //     .then(res => res.json())
+    //     .then(data=>setCart(data))
+
+    // },[])
    
     const addProductHandelar=(product)=>{
         const toBeAddedKey=product.key;
@@ -50,7 +69,7 @@ const Shop = () => {
         <div className='shop'>
             <div className="all-products">
                 {
-                    product.map(p=>
+                    products10.map(p=>
                     <Product 
                     key={p.key} 
                     showAddToCart={true} 
@@ -61,9 +80,10 @@ const Shop = () => {
             </div>
             <div className="cart">
                 <Cart cart={cart}>
-                    <Link to="/order"><Button className="addToCartBtn">Review</Button></Link>
+                    <Link to="/order"><Button className="addToCartBtn">Review</Button></Link> 
                 </Cart>
             </div>
+           
             
            
                 

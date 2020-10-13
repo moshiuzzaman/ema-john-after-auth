@@ -15,6 +15,7 @@ const Header = () => {
                 <Link to="/shop">Shop</Link>
                 <Link to="/order">Order Review</Link>
                 <Link to="/manage">Manage Inventory here</Link>
+                <Link to="/shipment">shipment</Link>
                 <Button onClick={()=>setLoginUser({})}>Sing Out</Button>
             </nav>
         </div>

@@ -6,7 +6,9 @@ import { firebaseInitialize, googleSingInHandler, singOutHandler, isNotNewUser, 
 firebaseInitialize()
 
 function Login() {
-  
+  let history = useHistory();
+  let location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
 
   const [isNewUser,setIsNewUser] =useState(false)
   const [user,setUser]=useState({
@@ -18,6 +20,9 @@ function Login() {
     success : '',
     error: ""
   })
+  const sessionUser=(data)=>{
+    sessionStorage.setItem('user', JSON.stringify(data))
+  }
 
   const onBlur = (e) => {
     const fildName = e.target.name;
@@ -38,6 +43,7 @@ function Login() {
       const newUser ={...user}
       newUser[fildName]=fildValue
       setUser(newUser)
+
     }
   }
 
@@ -48,8 +54,8 @@ function Login() {
       .then(res=>{
         setUser(res)
         setLoginUser(res)
+        sessionUser(res)
          history.replace(from);
-         console.log(user);
       })
     }
     else if(!isNewUser && user.email && user.password){
@@ -57,8 +63,8 @@ function Login() {
      .then(res=>{
        setUser(res)
        setLoginUser(res)
+       sessionUser(res)
        history.replace(from);
-       console.log(user);
      })  
     }
     e.preventDefault()
@@ -70,6 +76,8 @@ function Login() {
     .then(res=>{
       setUser(res);
       setLoginUser(res)
+      sessionUser(res)
+      history.replace(from);
     })
   }
 const singOut=()=>{
@@ -80,10 +88,9 @@ const singOut=()=>{
     })
 }
 
- let history = useHistory();
- let location = useLocation();
 
- let { from } = location.state || { from: { pathname: "/" } };
+
+ 
  const [loginUser,setLoginUser]=useContext(userContext)
   return (
   <div style={{textAlign:'center'}}>

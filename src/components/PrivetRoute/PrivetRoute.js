@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { userContext } from '../../App';
 
 const PrivetRoute = ({ children, ...rest }) => {
-        const [loginUser, setLoginUser]=useContext(userContext)
+        let user={
+          email:''
+        }
+        const all=sessionStorage.getItem('user')
+        const newUser=JSON.parse(all)
+         user={...user,...newUser }
         return (
           <Route
             {...rest}
             render={({ location }) =>
-            loginUser.email ? (
+            user.email ? (
                 children
               ) : (
                 <Redirect

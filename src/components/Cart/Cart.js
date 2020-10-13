@@ -6,7 +6,7 @@ const Cart = (props) => {
     const cart=props.cart;
     for (let i = 0; i < cart.length; i++) {
         const item = cart[i];
-        total=total+item.price*item.quantity;
+        total=total+item.price*item.quantity||1;
     }
     const fixdNum=(num)=>{
         const x= num.toFixed(2);

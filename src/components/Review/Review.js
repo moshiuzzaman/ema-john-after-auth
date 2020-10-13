@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { getDatabaseCart, removeFromDatabaseCart, processOrder } from '../../utilities/databaseManager';
-import fakeData from '../../fakeData';
 import { useState } from 'react';
 import ReviewItem from '../ReviewItem/ReviewItem';
 import Cart from '../Cart/Cart';
@@ -20,17 +19,36 @@ const Review = () => {
      if(placeOrder){
         thanks= <img src={happyImage} alt=""/>
     }
-    
+    const [allProducts,setAllProducts]=useState([])
+    useEffect(()=>{
+        fetch('https://sheltered-savannah-58501.herokuapp.com/products')
+        .then(res=>res.json())
+        .then(data=>setAllProducts(data))
+    },[])
+
     useEffect(()=>{
         const products=getDatabaseCart()
         const ProductKeys = Object.keys(products)
-        const count=ProductKeys.map(pd=>{
-            const product= fakeData.find(product=>product.key===pd)
-            product.quantity=products[pd];
-            return product
-        })
-        setCart(count)
-    },[])
+    //     fetch('https://sheltered-savannah-58501.herokuapp.com/productsByKeys',{
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify(ProductKeys)
+    //     })
+    //     .then(res => res.json())
+    //     .then(data=>setCart(data))
+
+    // },[])
+
+        if(allProducts.length){
+            const count=ProductKeys.map(pd=>{
+                const product= allProducts.find(product=>product.key===pd)
+                product.quantity=products[pd];
+                return product
+            })
+            setCart(count)
+        }
+        
+    },[allProducts])
 
 
     const removeProduct=(key)=>{

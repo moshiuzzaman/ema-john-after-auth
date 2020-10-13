@@ -6,12 +6,10 @@ import NoMatch from './components/NoMatch/NoMatch';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Review from './components/Review/Review';
 import Manage from './components/Manage/Manage';
-import Product from './components/Product/Product';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Login from './components/Login/Login';
 import Shipment from './components/Shipment/Shipment';
@@ -22,21 +20,18 @@ import PrivetRoute from './components/PrivetRoute/PrivetRoute';
 export const userContext=createContext();
 function App() {
   const [loginUser,setLoginUser]=useState({})
-  console.log(loginUser);
   return (
     <userContext.Provider value={[loginUser,setLoginUser]} >
 
       <Router>
-        <h3>Email: {loginUser.email }</h3>
-        <h3>Name: {loginUser.name}</h3>
         <Header></Header>
           <Switch>
               <Route path="/shop">
                 <Shop></Shop>
               </Route>
-              <Route path="/order">
+              <PrivetRoute path="/order">
                 <Review></Review>
-              </Route>
+              </PrivetRoute>
               <Route path="/login">
                 <Login/>
               </Route>
